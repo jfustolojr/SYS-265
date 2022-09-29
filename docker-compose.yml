@@ -1,0 +1,18 @@
+version: '3.4'version: '3.4'
+
+services:
+  mysql:
+    image: mysql:8.0.28
+    container_name: mysql_server
+    environment:
+      MYSQL_DATABASE: docker_project
+      MYSQL_ROOT_PASSWORD: <hidden>
+      MYSQL_DB_USER: joe
+      MYSQL_DB_PASSWORD: <hidden>
+
+  python:
+    build: ./python
+    depends_on:
+      - "mysql"
+    links:
+      - mysql:mysql
