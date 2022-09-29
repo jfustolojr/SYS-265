@@ -1,1 +1,2 @@
-# SYS-265docker01 configuration
+hostname
+mgmt01-joseph
