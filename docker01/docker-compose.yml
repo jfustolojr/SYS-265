@@ -1,18 +1,23 @@
-version: '3.4'version: '3.4'
+version: '3.4'
+
+networks:
+  localdev:
+    driver: bridge
 
 services:
   mysql:
-    image: mysql:8.0.28
-    container_name: mysql_server
-    environment:
-      MYSQL_DATABASE: docker_project
-      MYSQL_ROOT_PASSWORD: <hidden>
-      MYSQL_DB_USER: joe
-      MYSQL_DB_PASSWORD: <hidden>
-
+    image: mysql:latest
+    networks:
+      - localdev
+    build: .
+    ports:
+      - "3306:3306"
   python:
     build: ./python
+    networks:
+      - localdev
     depends_on:
       - "mysql"
     links:
       - mysql:mysql
+

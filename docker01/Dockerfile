@@ -1,11 +1,17 @@
-FROM python:3.7.13-slim
+FROM mysql
 
-WORKDIR /app
+ENV MYSQL_DATABASE docker_project
+ENV MYSQL_ROOT_PASSWORD <insert_pass>
+ENV MYSQL_USER joe
+ENV MYSQL_PASSWORD <insert_pass>
 
-COPY requirements.txt ./
+# Define mountable directories.
+VOLUME ["/etc/mysql", "/var/lib/mysql"]
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Define working directory.
+WORKDIR /data
 
-COPY . .
+COPY ./initialize.sql /docker-entrypoint-initdb.d/
 
-CMD [ "python", "./main.py" ]
+# Expose ports.
+EXPOSE 3306
