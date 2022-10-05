@@ -19,3 +19,6 @@ sudo cp ../public-keys/id_rsa.pub /home/$user/.ssh/authorized_keys
 sudo chmod 700 /home/$user/.ssh
 sudo chmod 600 /home/$user/.ssh/authorized_keys
 sudo chown -R $user:$user /home/$user/.ssh
+
+sudo echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+sudo systemctl restart sshd.service
