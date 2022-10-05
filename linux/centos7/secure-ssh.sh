@@ -4,12 +4,18 @@
 #creates a new ssh user using $l parameter
 #adds a public key from the local repo or curled from the remote repo
 #removes roots ability to ssh in
-sudo useradd -m -d /home/SSHUser -s /bin/bash SSHUser
-sudo mkdir /home/SSHUser/.ssh
-ssh-keygen -t rsa -f "/home/SSHUser/.ssh/id_rsa" -P "" -q
-cp /home/SSHUser/.ssh/id_rsa.pub .
-git add -A
-git commit -m "New User with SSH Key"
-git push
-sudo echo "PermitRootLogin no" >> /etc/ssh/sshd_config
-sudo systemctl restart sshd.service
+
+user = ''
+
+while getopts 'user' flag; do
+	case "${flag}" in
+		user} user="${OPTARG}" ;;
+	esac
+done
+
+sudo useradd -m -d /home/$user -s /bin/bash $user
+sudo mkdir /home/$user/.ssh
+sudo cp ../public-keys/id_rsa.pub /home/$user/.ssh/authorized_keys
+sudo chmod 700 /home/$user/.ssh
+sudo chmod 600 /home/$user/.ssh/authorized_keys
+sudo chown -R $user:$user /home/$user/.ssh
