@@ -1,0 +1,21 @@
+---
+- name: Git SYS265
+  hosts: git
+  become: true
+  vars:
+    firewalld_enable: true
+  roles:
+  - geerlingguy.git
+
+  tasks:
+    - name: add firewall rules
+      firewalld:
+        port: "{{item.port}}/{{item.proto}}"
+        permanent: yes
+        state: "enabled"
+        immediate: yes
+        with_items:
+          - {port: "22", proto: "tcp"}
+          - {port: "80", proto: "tcp"}
+          - {port: "443", proto: "tcp"}
+          - {port: "9418", proto: "tcp"}
